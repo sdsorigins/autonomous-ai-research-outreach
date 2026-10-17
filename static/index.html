@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autonomous Research Intelligence</title>
+  
+  <!-- Refined Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/static/style.css">
+  
+  <!-- Three.js & GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+  <!-- Ambient Understated 3D Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <div id="app-container">
+
+    <!-- ======================================================================
+         LEFT SIDEBAR: 4-Agent Crew Topology
+         ====================================================================== -->
+    <aside class="agent-sidebar">
+      
+      <div class="brand-header">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <h1>Intelligence Crew</h1>
+          <span>4 Autonomous Agents</span>
+        </div>
+      </div>
+
+      <div class="sidebar-section-title">Active Agent Pipeline</div>
+
+      <div class="agent-nodes-list">
+        <!-- Agent 1 -->
+        <div class="agent-node-item" id="node-agent-1">
+          <div class="agent-node-left">
+            <span class="agent-dot"></span>
+            <span class="agent-meta-name">Research Strategist</span>
+          </div>
+          <span class="agent-status-badge" id="status-1">Idle</span>
+        </div>
+
+        <!-- Agent 2 -->
+        <div class="agent-node-item" id="node-agent-2">
+          <div class="agent-node-left">
+            <span class="agent-dot"></span>
+            <span class="agent-meta-name">Quantitative Analyst</span>
+          </div>
+          <span class="agent-status-badge" id="status-2">Idle</span>
+        </div>
+
+        <!-- Agent 3 -->
+        <div class="agent-node-item" id="node-agent-3">
+          <div class="agent-node-left">
+            <span class="agent-dot"></span>
+            <span class="agent-meta-name">Citations Verifier</span>
+          </div>
+          <span class="agent-status-badge" id="status-3">Idle</span>
+        </div>
+
+        <!-- Agent 4 -->
+        <div class="agent-node-item" id="node-agent-4">
+          <div class="agent-node-left">
+            <span class="agent-dot"></span>
+            <span class="agent-meta-name">Executive Delivery</span>
+          </div>
+          <span class="agent-status-badge" id="status-4">Idle</span>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-email-row">
+          <label for="target-email-input">Default Delivery Email</label>
+          <input 
+            type="email" 
+            id="target-email-input" 
+            class="sidebar-input" 
+            value="executive@enterprise.com"
+          >
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ======================================================================
+         RIGHT PANEL: Conversational Canvas
+         ====================================================================== -->
+    <main class="chat-main">
+      
+      <header class="chat-header">
+        <div class="header-status-indicator">
+          <span class="pulse-point"></span>
+          <span>Inference Ready · Groq Llama-3.3</span>
+        </div>
+        <span style="font-size:0.75rem; font-family:var(--font-mono); color:var(--text-muted);">
+          Evidence Ledger: Active
+        </span>
+      </header>
+
+      <section class="chat-scroll-area" id="chat-stream">
+        <div class="chat-inner-bounds" id="chat-bounds">
+          
+          <!-- Hero Section -->
+          <div class="welcome-hero" id="welcome-hero">
+            <h2>Autonomous Research Intelligence</h2>
+            <p>
+              Submit an objective to deploy the 4-agent crew. Findings are cross-referenced across live sources, 
+              benchmarked quantitatively in statistical tables, and compiled into a downloadable PDF brief.
+            </p>
+
+            <div class="starter-chips">
+              <button class="starter-btn" onclick="submitPrompt('Acme AI latency reduction benchmarks and Series B funding 2026')">
+                Acme AI Series B & Latency
+              </button>
+              <button class="starter-btn" onclick="submitPrompt('Autonomous agent memory architectures and context scaling in 2026')">
+                Agent Memory Architectures
+              </button>
+              <button class="starter-btn" onclick="submitPrompt('Enterprise adoption metrics of autonomous workflows in financial services')">
+                Financial Autonomous Workflows
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Input Bar -->
+      <footer class="chat-input-bar">
+        <div class="input-capsule">
+          <textarea 
+            id="query-input" 
+            placeholder="Enter research objective..." 
+            rows="1"
+          ></textarea>
+          <button class="input-send-btn" id="send-trigger" title="Launch Investigation">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+          </button>
+        </div>
+      </footer>
+
+    </main>
+
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

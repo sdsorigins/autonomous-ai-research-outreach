@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Sarah Chen",
+    "email": "sarah.chen@techventures-example.com",
+    "company": "TechVentures AI",
+    "role": "Chief Technology Officer",
+    "interests": "Enterprise AI agent orchestration, autonomous workflows, latency reduction",
+    "notes": "Direct decision maker for engineering tooling and agentic architectures."
+  },
+  {
+    "name": "Marcus Vance",
+    "email": "marcus.vance@innovatecorp-example.com",
+    "company": "InnovateCorp",
+    "role": "VP of Operations & Partnerships",
+    "interests": "Supply chain automation, sales workflow integration, CRM synchronization",
+    "notes": "Looking to upgrade legacy communication pipelines with AI-verified outreach."
+  },
+  {
+    "name": "Emily Watson",
+    "email": "emily.intern@unrelated-retail-example.com",
+    "company": "FastFashion Retailers",
+    "role": "Seasonal Social Media Intern",
+    "interests": "TikTok trends, retail inventory tracking",
+    "notes": "Irrelevant contact for enterprise AI infrastructure and B2B workflows."
+  }
+]
