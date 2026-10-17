@@ -48,7 +48,7 @@ def generate_research_pdf(
     analysis, strategic implications, recommendations, and limitations so the
     report provides a deeper, more substantive research narrative.
     """
-    os.makedirs("reports", exist_ok=True)
+    os.makedirs(os.path.dirname(output_path) if output_path else "reports", exist_ok=True)
     if not output_path:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         output_path = f"reports/Research_Report_{timestamp}.pdf"

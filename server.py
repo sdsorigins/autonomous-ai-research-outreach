@@ -1,4 +1,5 @@
 import os
+import base64
 import sys
 import re
 import time
@@ -21,13 +22,17 @@ from pydantic import BaseModel
 
 from src.config import settings
 from src.memory import global_ledger
-from src.tools.search_tool import WebSearchTool
 from src.pdf_generator import generate_research_pdf
 from src.llm_analysis import (
     generate_analysis,
     generate_fallback_evidence_raw,
     build_fallback_analysis,
 )
+
+# Vercel functions have a read-only filesystem except /tmp
+IS_VERCEL = bool(os.environ.get("VERCEL"))
+REPORTS_DIR = Path("/tmp/reports") if IS_VERCEL else Path("reports")
+REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(title="Autonomous Intelligence Research Assistant")
 
@@ -195,7 +200,7 @@ async def execute_research(req: ResearchRequest):
     # Generate PDF
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     pdf_filename = f"Research_Brief_{timestamp}.pdf"
-    pdf_path = f"reports/{pdf_filename}"
+    pdf_path = str(REPORTS_DIR / pdf_filename)
 
     generate_research_pdf(
         objective=query,
@@ -211,6 +216,12 @@ async def execute_research(req: ResearchRequest):
         output_path=pdf_path,
     )
 
+    # Serverless instances do not share /tmp, so embed the PDF in the response on Vercel
+    pdf_download_url = f"/api/download/{pdf_filename}"
+    if IS_VERCEL:
+        with open(pdf_path, "rb") as pf:
+            pdf_download_url = "data:application/pdf;base64," + base64.b64encode(pf.read()).decode()
+
     return {
         "query": query,
         "evidence": evidence_items_data,
@@ -218,7 +229,7 @@ async def execute_research(req: ResearchRequest):
         "verification": verification_report,
         "email_draft": email_draft,
         "pdf_filename": pdf_filename,
-        "pdf_download_url": f"/api/download/{pdf_filename}",
+        "pdf_download_url": pdf_download_url,
     }
 
 
@@ -237,7 +248,7 @@ async def send_email(req: SendEmailRequest):
         return {"status": "REJECTED", "message": "Email delivery was dismissed."}
 
     clean_name = req.recipient_email.split("@")[0].replace(".", "_")
-    draft_file = f"reports/outreach_draft_{clean_name}.eml"
+    draft_file = str(REPORTS_DIR / f"outreach_draft_{clean_name}.eml")
     with open(draft_file, "w", encoding="utf-8") as f:
         f.write(f"To: {req.recipient_email}\nSubject: {req.subject}\n\n{req.body}\n\n[Attached: {req.pdf_filename}]")
 
@@ -250,7 +261,7 @@ async def send_email(req: SendEmailRequest):
 @app.get("/api/download/{filename}")
 async def download_pdf(filename: str):
     """Serves the generated research PDF for instant browser download."""
-    file_path = Path("reports") / filename
+    file_path = REPORTS_DIR / filename
     if not file_path.exists():
         raise HTTPException(status_code=404, detail="Requested report PDF not found.")
     return FileResponse(

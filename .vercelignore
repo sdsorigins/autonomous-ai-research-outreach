@@ -1,0 +1,9 @@
+.venv
+.env
+tests
+reports
+report docs
+__pycache__
+.pytest_cache
+_tmp_test.py
+*.docx

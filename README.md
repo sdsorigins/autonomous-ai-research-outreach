@@ -84,7 +84,8 @@ The system deploys **exactly 2 autonomous agents** collaborating in one Crew:
 agentic_ai/
 ├── .env.example               # Environment variables template
 ├── .gitignore                  # Git exclusions for Python & credentials
-├── requirements.txt            # Python dependencies (CrewAI, Groq, Rich, etc.)
+├── requirements.txt            # Slim deps for the Vercel web app
+├── requirements-full.txt       # Full deps (CrewAI, Groq, Rich, etc.)
 ├── README.md                   # System documentation & usage guide
 ├── main.py                     # Interactive CLI entrypoint & menu system
 ├── data/
@@ -137,7 +138,7 @@ python -m venv .venv
 source .venv/bin/activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r requirements-full.txt
 ```
 
 ### 3. Environment Configuration

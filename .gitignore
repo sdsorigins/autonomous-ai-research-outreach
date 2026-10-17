@@ -36,3 +36,8 @@ token.json
 # Reports & Cache
 reports/audit_ledger_*.json
 .pytest_cache/
+
+.vercel
+
+# Vercel
+.vercel/
